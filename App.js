@@ -1,73 +1,52 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React from 'react';
+import { View, Text, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const Board = () => {
-  const [board, setBoard] = useState([
-    ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
-    ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-    [' ', '.', ' ', '.', ' ', '.', ' ', '.'],
-    ['.', ' ', '.', ' ', '.', ' ', '.', ' '],
-    [' ', '.', ' ', '.', ' ', '.', ' ', '.'],
-    ['.', ' ', '.', ' ', '.', ' ', '.', ' '],
-    ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-    ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
-  ]);
 
-  const isBlack = (row, col) => {
-    return (row + col) % 2 === 1;
-  };
-
-  const getPieceColor = (isBlack) => {
-    return isBlack ? '#a9a9a9' : '#fff';
-  };
-
-  const getTextColor = (isBlack) => {
-    return isBlack ? '#fff' : '#000';
-  };
-
-  const renderSquare = (piece, row, col) => {
-    const backgroundColor = getPieceColor(isBlack(row, col));
-    const textColor = getTextColor(isBlack(row, col));
-
-    return (
-      <View style={[styles.square, { backgroundColor }]} key={`${row}${col}`}>
-        <Text style={{ color: textColor }}>{piece}</Text>
-      </View>
-    );
-  };
-
-  const renderRow = (row, rowIndex) => {
-    return (
-      <View key={rowIndex} style={styles.row}>
-        {row.map((piece, colIndex) => renderSquare(piece, rowIndex, colIndex))}
-      </View>
-    );
-  };
-
+const HomeScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      {board.map((row, rowIndex) => renderRow(row, rowIndex))}
+    <View>
+      <Text>Welcome to the Home Screen!</Text>
+      <Button title="Go to Login" onPress={() => navigation.navigate('Login')} />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  square: {
-    flex: 1,
-    aspectRatio: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#000',
-  },
-});
+const LoginScreen = ({ navigation }) => {
+  return (
+    <View>
+      <Text>Login</Text>
+     
+      <Button title="Go to Home "  onPress={() => navigation.navigate('Home')}  />
+      
+      <Button title="Go to Signup" onPress={() => navigation.navigate('Signup')} />
+    </View>
+  );
+};
 
-export default Board;
+
+const SignupScreen = ({ navigation }) => {
+  return (
+    <View>
+      <Text>Sign Up</Text>
+      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+    </View>
+  );
+};
+
+const Stack = createStackNavigator();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default App;
